@@ -1,50 +1,86 @@
-# Welcome to your Expo app 👋
+# 🍿 WhatWeWatch
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Swipez ensemble, trouvez LE film.**
 
-## Get started
+WhatWeWatch est une appli mobile qui résout le problème universel : "On regarde quoi ce soir ?". Créez une room, invitez vos potes, swipez sur des films style Tinder, et découvrez vos matchs communs.
 
-1. Install dependencies
+<p align="center">
+  <img src="assets/screenshots/home.png" width="300" alt="Écran d'accueil" />
+</p>
 
-   ```bash
-   npm install
-   ```
+## Comment ça marche
 
-2. Start the app
+1. **Créer une Room** — Un code à 4 chiffres est généré
+2. **Partager le code** — Vos potes rejoignent avec ce code
+3. **Swiper** — Chacun swipe les films (Smash 👍 ou Pass 👎)
+4. **Matchs** — Les films que tout le monde a aimé s'affichent
 
-   ```bash
-   npx expo start
-   ```
+## Stack technique
 
-In the output, you'll find options to open the app in a
+- **React Native** + **Expo** — Framework mobile cross-platform
+- **TypeScript** — Typage statique
+- **Firebase Firestore** — Base de données temps réel (rooms, votes)
+- **TMDB API** — Catalogue de films (affiches, synopsis, tendances)
+- **React Native Reanimated** — Animations fluides (swipe, rotation)
+- **React Native Gesture Handler** — Gestes tactiles (drag)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Lancer le projet
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Prérequis
 
-## Get a fresh project
+- [Node.js](https://nodejs.org/) (LTS)
+- [Expo Go](https://expo.dev/go) sur votre téléphone
+- Un compte [TMDB](https://www.themoviedb.org/) (gratuit) pour la clé API
+- Un projet [Firebase](https://firebase.google.com/) avec Firestore activé
 
-When you're ready, run:
+### Installation
 
 ```bash
-npm run reset-project
+git clone https://github.com/noahnormand/WhatWeWatch.git
+cd WhatWeWatch
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Configuration
 
-## Learn more
+Créez un fichier `.env` à la racine du projet :
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+EXPO_PUBLIC_TMDB_API_KEY=votre_cle_tmdb
+EXPO_PUBLIC_FIREBASE_API_KEY=votre_cle_firebase
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=votre_projet.firebaseapp.com
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=votre_projet
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=votre_projet.firebasestorage.app
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=votre_sender_id
+EXPO_PUBLIC_FIREBASE_APP_ID=votre_app_id
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Lancement
 
-## Join the community
+```bash
+npx expo start
+```
 
-Join our community of developers creating universal apps.
+Scannez le QR code avec Expo Go sur votre téléphone.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Structure du projet
+
+```
+WhatWeWatch/
+├── app/
+│   ├── _layout.tsx      # Layout principal + navigation
+│   ├── index.tsx        # Écran d'accueil
+│   ├── join.tsx         # Rejoindre une room
+│   ├── lobby.tsx        # Lobby (affiche le code)
+│   ├── swipe.tsx        # Swipe des films
+│   └── matches.tsx      # Résultats des matchs
+├── service/
+│   ├── firebase.ts      # Config Firebase
+│   ├── rooms.ts         # Logique rooms + votes
+│   └── tmdb.ts          # Appels API TMDB
+└── assets/
+```
+
+## Auteur
+
+**Noah Normand** — [@noahnormand](https://github.com/noahnormand)
