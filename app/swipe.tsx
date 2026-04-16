@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -14,11 +14,13 @@ interface Movie {
 const SWIPE_THRESHOLD = 150;
 
 const Swipe = () => {
+    const [loaded, setLoaded] = useState(false);
     const { code } = useLocalSearchParams();
     const [movies, setMovies] = useState<Movie[]>([]);
     const [likedMovies, setLikedMovies] = useState<Movie[]>([]);
     const [userId] = useState(() => Math.random().toString(36).substring(2, 8));
     const translateX = useSharedValue(0);
+    const router = useRouter();
 
     const handleSmash = () => {
         const movie = movies[0];
@@ -68,25 +70,30 @@ const Swipe = () => {
 
     useEffect(() => {
         const loadRoom = async () => {
+            console.log("code reçu:", code);
             const room = await joinRoom(code as string) as any;
+            console.log("room:", room);
             if (room) {
+                console.log("movies:", room.movies?.length);
                 setMovies(room.movies);
             }
+            setLoaded(true);
         };
         loadRoom();
     }, []);
 
+    if (movies.length === 0 && likedMovies.length === 0) {
+        return (
+            <View style={{ flex: 1, backgroundColor: "#1a1a2e", justifyContent: "center", alignItems: "center" }}>
+                <Text style={{ color: "#a0a0b0", fontSize: 18 }}>Chargement...</Text>
+            </View>
+        );
+    }
+
     if (movies.length === 0) {
         return (
             <View style={{ flex: 1, backgroundColor: "#1a1a2e", justifyContent: "center", alignItems: "center" }}>
-                <Text style={{ color: "#e94560", fontSize: 24, fontWeight: "bold" }}>
-                    {likedMovies.length > 0 ? "C'est fini ! 🎬" : "Chargement..."}
-                </Text>
-                {likedMovies.length > 0 && (
-                    <Text style={{ color: "#a0a0b0", fontSize: 16, marginTop: 10 }}>
-                        {likedMovies.length} film(s) liké(s)
-                    </Text>
-                )}
+                <Text style={{ color: "#a0a0b0", fontSize: 18 }}>Redirection...</Text>
             </View>
         );
     }
