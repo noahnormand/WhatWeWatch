@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { joinRoom } from "../service/rooms";
@@ -7,6 +7,7 @@ const Join = () => {
     const router = useRouter();
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
+    const { pseudo } = useLocalSearchParams();
 
     const handleJoin = async () => {
         if (code.length != 4) {
@@ -15,7 +16,7 @@ const Join = () => {
         }
         const room = await joinRoom(code);
         if (room) {
-            router.push(`/swipe?code=${code}`);
+            router.push(`/lobby?code=${code}&pseudo=${pseudo}&action=join`);
         } else {
             setError("Room non trouvée");
         }

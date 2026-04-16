@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
-import { joinRoom, voteMovie } from "../service/rooms";
+import { joinRoom, listenToRoom, setPlayerFinished, voteMovie } from "../service/rooms";
 
 interface Movie {
     id: number;
@@ -17,12 +17,12 @@ const SWIPE_THRESHOLD = 150;
 const Swipe = () => {
     const [showDetails, setShowDetails] = useState(false);
     const [loaded, setLoaded] = useState(false);
-    const { code } = useLocalSearchParams();
     const [movies, setMovies] = useState<Movie[]>([]);
     const [likedMovies, setLikedMovies] = useState<Movie[]>([]);
     const [userId] = useState(() => Math.random().toString(36).substring(2, 8));
     const translateX = useSharedValue(0);
     const router = useRouter();
+    const { code, pseudo } = useLocalSearchParams();
 
     const handleSmash = () => {
         setShowDetails(false)
@@ -85,9 +85,23 @@ const Swipe = () => {
         };
         loadRoom();
     }, []);
+
     useEffect(() => {
         if (loaded && movies.length === 0 && likedMovies.length > 0) {
-            router.push(`/matches?code=${code}`);
+            setPlayerFinished(code as string, pseudo as string);
+        }
+    }, [movies, loaded]);
+
+    useEffect(() => {
+        if (loaded && movies.length === 0 && likedMovies.length > 0) {
+            const unsubscribe = listenToRoom(code as string, (room) => {
+                const players = room.players || {};
+                const allFinished = Object.values(players).every((p: any) => p.finished);
+                if (allFinished) {
+                    router.push(`/matches?code=${code}`);
+                }
+            });
+            return () => unsubscribe();
         }
     }, [movies, loaded]);
 
