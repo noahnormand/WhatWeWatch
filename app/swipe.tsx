@@ -81,6 +81,11 @@ const Swipe = () => {
         };
         loadRoom();
     }, []);
+    useEffect(() => {
+        if (loaded && movies.length === 0 && likedMovies.length > 0) {
+            router.push(`/matches?code=${code}`);
+        }
+    }, [movies, loaded]);
 
     if (movies.length === 0 && likedMovies.length === 0) {
         return (
