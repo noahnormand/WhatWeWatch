@@ -1,4 +1,4 @@
-# 🍿 WhatWeWatch
+# 🍿 WhatWeWatch 🍿
 
 **Swipez ensemble, trouvez LE film.**
 
