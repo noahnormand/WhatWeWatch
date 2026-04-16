@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 18.7.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_TMDB_API_KEY": "0dde7858f9e02bd7ac76b47d569bc963",
+        "EXPO_PUBLIC_FIREBASE_API_KEY": "AIzaSyAd2a7ciYV8HRikHkQwRJgHDUBVXcjVFcs",
+        "EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN": "whatwewatch-b51ec.firebaseapp.com",
+        "EXPO_PUBLIC_FIREBASE_PROJECT_ID": "whatwewatch-b51ec",
+        "EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET": "whatwewatch-b51ec.firebasestorage.app",
+        "EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID": "509312170269",
+        "EXPO_PUBLIC_FIREBASE_APP_ID": "1:509312170269:web:b78b1fa75f4d285f9589f4"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

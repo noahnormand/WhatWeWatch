@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "5f5ea741-845f-4e04-89b3-818d72d78f01"
+      }
+    },
+    "android": {
+      "package": "com.noahnormand.whatwewatch"
+    }
+  }
+}
