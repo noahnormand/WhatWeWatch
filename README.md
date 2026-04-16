@@ -8,6 +8,12 @@ WhatWeWatch est une appli mobile qui résout le problème universel : "On regard
   <img src="assets/screenshots/home.png" width="300" alt="Écran d'accueil" />
 </p>
 
+## Installer l'appli
+
+**Android** — Téléchargez directement l'APK : [Télécharger WhatWeWatch](https://expo.dev/accounts/noahnormand/projects/whatwewatch/builds/3dd54b8e-b801-4d37-a213-d29cec71d76b)
+
+Ouvrez le lien sur votre téléphone Android, installez l'APK, et c'est parti !
+
 ## Comment ça marche
 
 1. **Créer une Room** — Un code à 4 chiffres est généré
@@ -24,7 +30,7 @@ WhatWeWatch est une appli mobile qui résout le problème universel : "On regard
 - **React Native Reanimated** — Animations fluides (swipe, rotation)
 - **React Native Gesture Handler** — Gestes tactiles (drag)
 
-## Lancer le projet
+## Lancer le projet en développement
 
 ### Prérequis
 
