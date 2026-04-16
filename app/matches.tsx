@@ -1,7 +1,9 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { joinRoom } from "../service/rooms";
+
+
 
 interface Movie {
     id: number;
@@ -13,6 +15,7 @@ const Matches = () => {
     const { code } = useLocalSearchParams();
     const [matches, setMatches] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
         const loadMatches = async () => {
@@ -89,6 +92,20 @@ const Matches = () => {
                     )}
                 />
             )}
+            <TouchableOpacity
+                style={{
+                    backgroundColor: "#e94560",
+                    paddingVertical: 16,
+                    borderRadius: 12,
+                    marginHorizontal: 30,
+                    marginBottom: 30,
+                    marginTop: 15,
+                    alignItems: "center",
+                }}
+                onPress={() => router.push("/")}
+            >
+                <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>Retour à l'accueil</Text>
+            </TouchableOpacity>
         </View>
     );
 };

@@ -9,11 +9,13 @@ interface Movie {
     id: number;
     title: string;
     poster_path: string;
+    overview: string;
 }
 
 const SWIPE_THRESHOLD = 150;
 
 const Swipe = () => {
+    const [showDetails, setShowDetails] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const { code } = useLocalSearchParams();
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -23,6 +25,7 @@ const Swipe = () => {
     const router = useRouter();
 
     const handleSmash = () => {
+        setShowDetails(false)
         const movie = movies[0];
         setLikedMovies([...likedMovies, movie]);
         voteMovie(code as string, userId, movie.id, true);
@@ -30,6 +33,7 @@ const Swipe = () => {
     };
 
     const handlePass = () => {
+        setShowDetails(false)
         const movie = movies[0];
         voteMovie(code as string, userId, movie.id, false);
         setMovies(movies.slice(1));
@@ -118,10 +122,28 @@ const Swipe = () => {
                     shadowRadius: 20,
                     elevation: 10,
                 }]}>
-                    <Image
-                        source={{ uri: "https://image.tmdb.org/t/p/w500" + movies[0].poster_path }}
-                        style={{ width: 300, height: 420, borderRadius: 20 }}
-                    />
+                    <TouchableOpacity activeOpacity={0.9} onPress={() => setShowDetails(!showDetails)}>
+                        <Image
+                            source={{ uri: "https://image.tmdb.org/t/p/w500" + movies[0].poster_path }}
+                            style={{ width: 300, height: 420, borderRadius: 20 }}
+                        />
+                        {showDetails && (
+                            <View style={{
+                                position: "absolute",
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                backgroundColor: "rgba(0,0,0,0.85)",
+                                padding: 15,
+                                borderBottomLeftRadius: 20,
+                                borderBottomRightRadius: 20,
+                            }}>
+                                <Text style={{ color: "white", fontSize: 13, lineHeight: 18 }}>
+                                    {movies[0].overview}
+                                </Text>
+                            </View>
+                        )}
+                    </TouchableOpacity>
                     <Animated.View style={[smashOverlay, {
                         position: "absolute", top: 20, left: 20,
                         borderWidth: 3, borderColor: "#2ecc71", borderRadius: 8, padding: 8,
