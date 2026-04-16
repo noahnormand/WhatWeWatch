@@ -116,7 +116,7 @@ const Swipe = () => {
     if (movies.length === 0) {
         return (
             <View style={{ flex: 1, backgroundColor: "#1a1a2e", justifyContent: "center", alignItems: "center" }}>
-                <Text style={{ color: "#a0a0b0", fontSize: 18 }}>Redirection...</Text>
+                <Text style={{ color: "#a0a0b0", fontSize: 18 }}>En attente des autres participants</Text>
             </View>
         );
     }
