@@ -68,7 +68,7 @@ const Swipe = () => {
 
     useEffect(() => {
         const loadRoom = async () => {
-            const room = await joinRoom(code as string);
+            const room = await joinRoom(code as string) as any;
             if (room) {
                 setMovies(room.movies);
             }

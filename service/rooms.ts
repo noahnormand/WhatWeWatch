@@ -28,19 +28,26 @@ export const joinRoom = async (code: string) => {
 };
 
 export const voteMovie = async (roomId: string, oderId: string, movieId: number, liked: boolean) => {
-    const q = query(collection(db, "rooms"), where("code", "==", roomId));
-    const snapshot = await getDocs(q);
+    try {
+        console.log("voteMovie called:", roomId, oderId, movieId, liked);
+        const q = query(collection(db, "rooms"), where("code", "==", roomId));
+        const snapshot = await getDocs(q);
+        console.log("snapshot empty?", snapshot.empty);
 
-    if (!snapshot.empty) {
-        const roomRef = snapshot.docs[0].ref;
-        const roomData = snapshot.docs[0].data();
-        const users = roomData.users || {};
+        if (!snapshot.empty) {
+            const roomRef = snapshot.docs[0].ref;
+            const roomData = snapshot.docs[0].data();
+            const users = roomData.users || {};
 
-        if (!users[oderId]) {
-            users[oderId] = {};
+            if (!users[oderId]) {
+                users[oderId] = {};
+            }
+            users[oderId][movieId.toString()] = liked;
+
+            await updateDoc(roomRef, { users: users });
+            console.log("vote saved!");
         }
-        users[oderId][movieId.toString()] = liked;
-
-        await updateDoc(roomRef, { users: users });
+    } catch (error) {
+        console.log("voteMovie error:", error);
     }
 };
