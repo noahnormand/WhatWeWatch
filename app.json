@@ -1,12 +1,24 @@
 {
   "expo": {
+    "name": "WhatWeWatch",
+    "slug": "whatwewatch",
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1a2e"
+    },
     "extra": {
       "eas": {
         "projectId": "5f5ea741-845f-4e04-89b3-818d72d78f01"
       }
     },
     "android": {
-      "package": "com.noahnormand.whatwewatch"
+      "package": "com.noahnormand.whatwewatch",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#1a1a2e"
+      }
     }
   }
 }
