@@ -1,29 +1,35 @@
+import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
-import { getTrendingMovies } from "../service/tmdb";
+import { joinRoom, voteMovie } from "../service/rooms";
 
 interface Movie {
     id: number;
     title: string;
     poster_path: string;
-    overview: string;
 }
 
 const SWIPE_THRESHOLD = 150;
 
 const Swipe = () => {
+    const { code } = useLocalSearchParams();
     const [movies, setMovies] = useState<Movie[]>([]);
     const [likedMovies, setLikedMovies] = useState<Movie[]>([]);
+    const [userId] = useState(() => Math.random().toString(36).substring(2, 8));
     const translateX = useSharedValue(0);
 
     const handleSmash = () => {
-        setLikedMovies([...likedMovies, movies[0]]);
+        const movie = movies[0];
+        setLikedMovies([...likedMovies, movie]);
+        voteMovie(code as string, userId, movie.id, true);
         setMovies(movies.slice(1));
     };
 
     const handlePass = () => {
+        const movie = movies[0];
+        voteMovie(code as string, userId, movie.id, false);
         setMovies(movies.slice(1));
     };
 
@@ -61,9 +67,13 @@ const Swipe = () => {
     });
 
     useEffect(() => {
-        getTrendingMovies().then((results) => {
-            setMovies(results);
-        });
+        const loadRoom = async () => {
+            const room = await joinRoom(code as string);
+            if (room) {
+                setMovies(room.movies);
+            }
+        };
+        loadRoom();
     }, []);
 
     if (movies.length === 0) {
@@ -83,6 +93,9 @@ const Swipe = () => {
 
     return (
         <View style={{ flex: 1, backgroundColor: "#1a1a2e", justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ color: "#a0a0b0", fontSize: 14, marginBottom: 10 }}>
+                Room : {code}
+            </Text>
             <GestureDetector gesture={gesture}>
                 <Animated.View style={[cardStyle, {
                     borderRadius: 20,
@@ -97,21 +110,15 @@ const Swipe = () => {
                         source={{ uri: "https://image.tmdb.org/t/p/w500" + movies[0].poster_path }}
                         style={{ width: 300, height: 420, borderRadius: 20 }}
                     />
-
-                    {/* Overlay SMASH */}
                     <Animated.View style={[smashOverlay, {
                         position: "absolute", top: 20, left: 20,
-                        borderWidth: 3, borderColor: "#2ecc71", borderRadius: 8,
-                        padding: 8,
+                        borderWidth: 3, borderColor: "#2ecc71", borderRadius: 8, padding: 8,
                     }]}>
                         <Text style={{ color: "#2ecc71", fontSize: 28, fontWeight: "bold" }}>SMASH</Text>
                     </Animated.View>
-
-                    {/* Overlay PASS */}
                     <Animated.View style={[passOverlay, {
                         position: "absolute", top: 20, right: 20,
-                        borderWidth: 3, borderColor: "#e74c3c", borderRadius: 8,
-                        padding: 8,
+                        borderWidth: 3, borderColor: "#e74c3c", borderRadius: 8, padding: 8,
                     }]}>
                         <Text style={{ color: "#e74c3c", fontSize: 28, fontWeight: "bold" }}>PASS</Text>
                     </Animated.View>
@@ -125,19 +132,16 @@ const Swipe = () => {
             <View style={{ flexDirection: "row", marginTop: 25, gap: 20 }}>
                 <TouchableOpacity
                     style={{
-                        backgroundColor: "#e74c3c",
-                        width: 70, height: 70, borderRadius: 35,
+                        backgroundColor: "#e74c3c", width: 70, height: 70, borderRadius: 35,
                         justifyContent: "center", alignItems: "center",
                     }}
                     onPress={handlePass}
                 >
                     <Text style={{ fontSize: 30 }}>👎</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity
                     style={{
-                        backgroundColor: "#2ecc71",
-                        width: 70, height: 70, borderRadius: 35,
+                        backgroundColor: "#2ecc71", width: 70, height: 70, borderRadius: 35,
                         justifyContent: "center", alignItems: "center",
                     }}
                     onPress={handleSmash}

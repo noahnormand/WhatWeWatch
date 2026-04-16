@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { createRoom } from "../service/rooms";
 
 const Home = () => {
     const router = useRouter();
@@ -30,7 +31,10 @@ const Home = () => {
                     alignItems: "center",
                     marginBottom: 15,
                 }}
-                onPress={() => router.push("/swipe")}
+                onPress={async () => {
+                    const code = await createRoom();
+                    router.push(`/lobby?code=${code}`);
+                }}
             >
                 <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>Créer une Room</Text>
             </TouchableOpacity>
@@ -46,7 +50,7 @@ const Home = () => {
                     width: 260,
                     alignItems: "center",
                 }}
-                onPress={() => console.log("Join Room")}
+                onPress={() => router.push("/join")}
             >
                 <Text style={{ color: "#e94560", fontSize: 18, fontWeight: "bold" }}>Rejoindre une Room</Text>
             </TouchableOpacity>
