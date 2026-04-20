@@ -10,7 +10,7 @@ WhatWeWatch est une appli mobile qui résout le problème universel : "On regard
 
 ## Installer l'appli
 
-**Android** — [Télécharger l'APK (v1.0.0)](https://github.com/noahnormand/WhatWeWatch/releases/tag/v1.0.0)
+**Android** — [Télécharger l'APK (v1.0.0)](https://github.com/noahnormand/WhatWeWatch/releases/tag/v1.1.0)
 
 Ouvrez le lien sur votre téléphone Android, téléchargez l'APK, installez-le, et c'est parti !
 
